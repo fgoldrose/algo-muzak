@@ -83,6 +83,7 @@ function melodyRecursively(steps, scale, base_pitch, cur_step, time, depth, note
 
 /*
 // wrap around the scale instead of switching octaves
+// commented out cause it sounds kinda bad lol
 function melodyRecursivelyWrap(steps, scale, base_pitch, cur_step, time, depth, notelen, osc) {
 	if (depth == 1){
 		for (let s = 0; s < steps.length ; s++){
@@ -205,12 +206,18 @@ document.getElementById('start').addEventListener('click', function() {
 	for(let j = 0; j < numMelodies; j++){
 		let melody = []
 		for(let i= 0; i < notesInMel; i++){
-			if (Math.random() > 0.1){
-			let step = Math.floor(Math.random() * 8)
-			melody.push(step)
-		}
-			else{
+			if (Math.random() < 0.1){
 				melody.push("_")
+			}
+			else if (i > 0 && Math.random() < 0.1){ // increased chance of repeated notes
+				melody.push(melody.slice(-1)[0])
+			}
+			else if (j > 0 && Math.random() < 0.1){ // increased chance of same notes btwn melodies
+				melody.push(melodies.slice(-1)[0].slice(j)[0])
+			}
+			else{
+				let step = Math.floor(Math.random() * 8)
+				melody.push(step)
 			}
 
 		}
